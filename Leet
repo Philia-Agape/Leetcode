@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 
+\\comment: 
 class Solution {
     public:
     int candy(vector<int>& ratings) {
