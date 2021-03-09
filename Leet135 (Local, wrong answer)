@@ -1,0 +1,47 @@
+#include <math.h>
+#include <iostream>
+#include <vector>
+
+class Solution {
+    public:
+    int candy(vector<int>& ratings) {
+        int sum = 0;
+        int length = ratings.size();
+        vector<int> candy;
+        candy.assign(length,1);
+        if ((length == 1)){
+            return 1;
+        }
+        if ((length == 2)){
+            if((ratings[0] == ratings[1])){
+                return 2;
+            }
+            else {
+                return 3;
+            }
+        }
+         if ((ratings[0] > ratings[1])){
+            candy[0] = 2;
+        }
+        for (int i =1; i<length-1; ++i){
+             if((ratings[i] > ratings[i+1]) || (ratings[i] > ratings[i-1])){
+                 if(ratings[i]>ratings[i+1]){
+                     candy[i] = candy[i+1]+1;
+                 }
+                 if(ratings[i]>ratings[i-1]){
+                     candy[i] = candy[i-1]+1;
+                 }
+                 if((ratings[i]>ratings[i+1])&& (ratings[i]>ratings[i-1])){
+                     candy[i] = max(candy[i-1]+1, candy[i+1]+1);
+                 }
+             }  
+        }
+         if ((ratings[length-1] > ratings[length-2])){
+            candy[length-1] = candy[length-2]+1;
+        }
+        for (int i =0; i<length; ++i){
+             sum = sum + candy[i];
+        }
+        return sum;
+    }
+};
