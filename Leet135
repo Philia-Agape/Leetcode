@@ -9,22 +9,23 @@ class Solution {
         int length = ratings.size();
         vector<int> candy;
         candy.assign(length,1);
-        if ((length == 1)){
+        if (length == 1){
             return 1;
         }
-        if ((length == 2)){
-            if((ratings[0] == ratings[1])){
+        if (length == 2){
+            if(ratings[0] == ratings[1]){
                 return 2;
             }
             else {
                 return 3;
             }
         }
-         if ((ratings[0] > ratings[1])){
+        //Beginning Initializing 
+        if (ratings[0] > ratings[1]){
             candy[0] = 2;
         }
+        //Compare left and right: Localization algorithm
         for (int i =1; i<length-1; ++i){
-             if((ratings[i] > ratings[i+1]) || (ratings[i] > ratings[i-1])){
                  if(ratings[i]>ratings[i+1]){
                      candy[i] = candy[i+1]+1;
                  }
@@ -34,11 +35,28 @@ class Solution {
                  if((ratings[i]>ratings[i+1])&& (ratings[i]>ratings[i-1])){
                      candy[i] = max(candy[i-1]+1, candy[i+1]+1);
                  }
-             }  
-        }
-         if ((ratings[length-1] > ratings[length-2])){
+        }    
+        //End Initializing
+        if ((ratings[length-1] > ratings[length-2])){
             candy[length-1] = candy[length-2]+1;
         }
+        //Solve the boundary condition
+        for (int i = length-2; i>0; --i){
+             if(ratings[i]>ratings[i+1]){
+                     candy[i] = max(candy[i],candy[i+1]+1);
+                 }
+                 if(ratings[i]>ratings[i-1]){
+                     candy[i] = max(candy[i],candy[i-1]+1);
+                 }
+                 if((ratings[i]>ratings[i+1])&& (ratings[i]>ratings[i-1])){
+                     candy[i] = max((candy[i],candy[i-1]+1), max(candy[i],candy[i+1]+1));
+                 }
+        }  
+           //Back to Beginning 
+        if ((ratings[0] > ratings[1])){
+            candy[0] = candy[1]+1;
+        }
+        //Accumulate
         for (int i =0; i<length; ++i){
              sum = sum + candy[i];
         }
