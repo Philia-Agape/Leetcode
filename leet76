@@ -1,0 +1,51 @@
+using namespace std;
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        //Test whether substring of s contains all elements of t
+        //Ascii-128
+        vector<int> flag (128,0);
+        vector<int> window (128,0);
+        if((s.size() < t.size())){
+            return "";
+        }
+        for (int i=0;i<t.size();++i){
+            flag[t[i]] += 1;
+        }
+
+        int left = 0, vectorcontain = 0, minsize = s.size();
+        int found = 0; //minsize would change if exist substring
+        int l=0, r=0;
+        //string s1 = "AV";
+        while(l <= (s.size()-t.size())){
+            //The Substring must start with element in t
+            
+            if((flag[s[l]] != 0)){
+                r = l+t.size()-1;
+                while(r<s.size()){
+                    for(int i=l;i<=r;++i){
+                        if ((flag[s[i]] != 0)){
+                            ++window[s[i]];
+                        }
+                    }
+                    for(int i=0;i<t.size();++i){
+                        if ((flag[t[i]] > window[t[i]])){
+                            ++vectorcontain;
+                        }
+                    }
+                    if((vectorcontain == 0) && (minsize > (r-l))){
+                        minsize = r-l+1;
+                        left = l;
+                        ++found;
+                    }
+                    vectorcontain = 0;
+                    fill(window.begin(), window.end(), 0);
+                    ++r;
+                }
+            } 
+            ++l;
+        }
+       return  (found != 0) ? s.substr(left,minsize) : "";
+    }
+    
+};
