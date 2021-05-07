@@ -1,0 +1,20 @@
+class Solution {
+public:
+    bool judgeSquareSum(int c) {
+        double root = sqrt(c*1.0);
+        int r = round(root);
+        if((abs(pow(r*1.0,2.0)-c) < 1e-20)){
+            return true;
+        }
+        int upbound = (int) root;
+        for(int i=upbound;i>0;i--){
+            root = sqrt((c-i*i));
+            r = round(root);
+            if((abs(root-r) < 1e-20)){
+                return true;
+            }               
+        }
+    
+        return false;
+    }
+};
