@@ -1,0 +1,43 @@
+class Solution {
+public:
+    vector<int> searchRange(vector<int>& nums, int target) {
+        if (nums.size() == 0){
+            return vector<int>{-1,-1};
+        }  
+        int l =0, r = nums.size()-1, m = (r-l)/2;
+        while (l<r-1){
+           while(nums[m] < target){
+              l = m+1;
+              m = l+(r-l)/2; 
+           }
+           while(nums[m] > target){
+              r = m;
+              m = l+(r-l)/2; 
+           } 
+        }
+        if(nums[m] != target){
+            return vector<int>{-1,1};
+        }
+        while(l<m-1){
+           while(nums[l]<target){
+               l = l+ (m-l)/2;
+           }        
+           while(nums[l]>=target){
+               l = l/2;
+           }      
+        }
+        while(m<r){
+            while(nums[r]==target){
+                r = r+(nums.size()-r)/2;
+            }
+            while(nums[r]>target){
+                r = m+(r-m)/2;
+            }
+        }   
+        vector<int> buffer;
+        buffer.assign(nums.begin()+l,nums.begin()+r);
+        return buffer;
+    }
+    
+    
+};
