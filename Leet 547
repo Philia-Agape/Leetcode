@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int findCircleNum(vector<vector<int>>& isConnected) {
+        int count = 0, l = isConnected.size();
+        vector<bool> flag (l, false); 
+        for(int i=0; i<l; ++i){
+            if(flag[i] == false){
+               flag[i] = true; 
+               dfs(isConnected, flag, i);
+               ++count;
+            }    
+        }
+        return count;
+    }
+    
+    void dfs(vector<vector<int>>& isConnected, vector<bool>& flag, int pos){
+        for(int j=0; j<isConnected.size(); ++j){
+            if((isConnected[pos][j] == 1) && (flag[j] == false) && (j != pos)){
+                flag[j] = true;
+                dfs(isConnected, flag, j);
+            }        
+        }
+        return;
+    }
+};
