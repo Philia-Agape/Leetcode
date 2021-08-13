@@ -1,0 +1,45 @@
+class Solution {
+public:
+    vector<vector<int>> pacificAtlantic(vector<vector<int>>& heights) {
+        int m = heights.size(), n = heights[0].size();    
+        if(m ==0 || n == 0){
+            return vector<vector<int>> ();
+        }
+        vector<vector<int>> location;
+        vector<vector<bool>> pacific (m, vector<bool> (n,false));
+        vector<vector<bool>> atlantic (m, vector<bool> (n,false));
+        for(int i =0; i<m; ++i){
+            for(int j=0; j<n; ++j){
+                search(heights, pacific, atlantic, i, j);
+                if((pacific[i][j] == true) && (atlantic[i][j] == true)){
+                    location.push_back(vector<int>{i,j});
+                }  
+            }
+        }
+        return location;
+    }
+    
+    void search(vector<vector<int>>& heights, vector<vector<bool>>& pacific, 
+                vector<vector<bool>>& atlantic, int r, int c){
+        if((pacific[r][c] == true) && (atlantic[r][c] == true)) return;
+        if(pacific[r][c] == false){ 
+            //if true, no need to check 
+            pacific[r][c] = ((r == 0) || (c == 0)) ? true : false;
+        }
+        if(atlantic[r][c] == false){
+            atlantic[r][c] = ((r == heights.size()-1) || (c == heights[0].size()-1)) ? true : false;
+        }
+      
+        int x, y;
+        vector<int> direction = {-1,0,1,0,-1}; 
+        for(int i=0; i<4; ++i){
+            x = r+direction[i], y = c+direction[i+1];
+            if((x >= 0) && (x < heights.size()) && (y >= 0) && (y < heights[0].size())){
+                 if((heights[x][y] <= heights[r][c])){ 
+                     search(heights, pacific, atlantic, x, y); 
+                 }    
+            }
+        }
+        return;
+    }
+};
