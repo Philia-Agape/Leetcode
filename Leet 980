@@ -1,0 +1,46 @@
+class Solution {
+public:
+    vector<int> direction {-1,0,1,0,-1};    
+    int sum = 0;
+    
+    int uniquePathsIII(vector<vector<int>>& grid) {
+       int m = grid.size(), n = grid[0].size(), count = 0, sx, sy, path = 1;
+       if((m ==0) || (n ==0)) return 0; 
+       for(int i=0; i<m; ++i){
+           for(int j=0; j<n; ++j){
+               if(grid[i][j] == 1){
+                  sx = i, sy = j; 
+               }
+               if(grid[i][j] == 0){
+                  ++path; 
+               }
+           }
+       }
+       
+       dfs(grid, path, sx, sy); 
+       return sum;
+    }
+    
+    
+    void dfs(vector<vector<int>>& grid, int path, int r, int c){
+       if(grid[r][c] == 2){
+          if(path != 0) return; 
+          if((path == 0) && (grid[r][c] == 2)){
+              ++sum; 
+              return;
+          }
+       }
+       
+       grid[r][c] = -1; //grid[r][c] is visited!
+       int x, y;
+       for(int i=0; i<4; ++i){
+           x = r+direction[i], y = c+direction[i+1];
+           if((x >= 0) && (x < grid.size()) && (y >= 0) 
+              && (y <grid[0].size()) && (grid[x][y] != -1)){
+                  dfs(grid, path-1, r+direction[i], c+direction[i+1]);    
+           }    
+       }
+       grid[r][c] = 0; //Get Back! grid[r][c] is not visited!
+       return; 
+    }
+};
