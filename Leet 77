@@ -1,0 +1,33 @@
+class Solution {
+public:
+    vector<vector<int>> combine(int n, int k) {
+        vector<vector<int>> ans;
+        vector<int> w{};
+        //for(int i=1; i<=n-k; ++i)
+        choose(n,k,1,ans,w);
+        return ans;
+    }
+    
+    void choose(int n, int k, int pos, vector<vector<int>>& ans, vector<int>& w){  
+      if(k == 0){ 
+          ans.push_back(w);
+          return;
+       } 
+        
+       /*if(n-pos+1 == k){
+          w.push_back(pos); 
+          choose(n,k-1,pos+1,ans,w);
+          return; 
+        }*/
+        
+        if(pos == n+1){
+            return;
+        }    
+        w.push_back(pos);
+        choose(n,k-1,pos+1,ans,w);
+        w.pop_back();
+        choose(n,k,pos+1,ans,w);
+        
+        
+    }
+};
