@@ -20,7 +20,7 @@ public:
           return; 
         }*/
         
-        if(pos == n+1){
+        if(pos == n+1 || (n-pos+1 < k)){
             return;
         }    
         w.push_back(pos);
