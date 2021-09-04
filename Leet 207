@@ -1,0 +1,32 @@
+class Solution {
+public:
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+       int n = prerequisites.size();
+       vector<set<int>> graph (numCourses, set<int> {}); //set<int>()
+       for(int i=0; i<n; ++i){
+           graph[prerequisites[i][0]].insert(prerequisites[i][1]);    
+       }
+       
+       int temp = numCourses;
+       vector<bool> visited (numCourses, false); 
+       while(numCourses){
+           //change = false;
+           for(int i=0; i<graph.size(); ++i){
+              if((graph[i].empty()) && (!visited[i])){
+                  visited[i] = true;
+                  --numCourses;
+                  for(int j=0; j<graph.size(); ++j){
+                     //erase non-exist element in set?
+                     auto pos = graph[j].find(i);
+                     if(pos != graph[j].end()){
+                        graph[j].erase(pos);
+                     }
+                  } 
+              }    
+           }
+           if(temp == numCourses) return false;
+           temp = numCourses;
+       } 
+       return true; 
+    } 
+};
