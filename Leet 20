@@ -1,0 +1,28 @@
+class Solution {
+public:
+    bool isValid(string s) {
+        int l = s.size();
+        char c;
+        stack<char> comp;
+        if (l % 2 == 1){ 
+            return false;
+        }    
+        for(int i=0; i<l; ++i){
+            // "(" is not '('
+            if((s[i]-'(' == 0) || (s[i]-'{' == 0) || (s[i]-'[' == 0)){
+               comp.push(s[i]); 
+            }
+            else{
+               if(comp.empty()) return false; 
+               c = comp.top(); 
+               if(((s[i]-c) == 2) || ((s[i]-c) == 1)){
+                  comp.pop(); 
+               }
+               else{
+                   return false;
+               } 
+            }
+        }    
+        return comp.empty();
+    }
+};
