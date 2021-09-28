@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int longestConsecutive(vector<int>& nums) {
+        const int n = nums.size();
+        int max_length = 0, r =0, l=0;
+        unordered_set<int> flag;
+        for(int i=0; i<n; ++i){
+            flag.insert(nums[i]);
+            //set.insert()
+        }
+        for(int i=0; i<n; ++i){
+           if(flag.count(nums[i])){
+           //set.count() returns 0 or 1, while set.find() return position
+               l = nums[i];
+               while(flag.count(l)){
+                   flag.erase(l);
+                   --l;
+               }
+               r = nums[i]+1;
+               while(flag.count(r)){
+                   flag.erase(r);
+                   ++r;
+               }
+               max_length = max(max_length, r-l-1);
+           } 
+        }
+        return max_length;
+    }
+    
+   
+};
