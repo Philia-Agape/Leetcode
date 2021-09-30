@@ -1,0 +1,36 @@
+class Solution {
+public:
+    //using kb = pair<double, double>;  
+    //using Unordered_map = unordered_map <kb,int>;
+    
+    typedef pair<double, double> Key;
+    typedef unordered_map< Key, int> Mapa;
+    
+    int maxPoints(vector<vector<int>>& points) {
+        //unordered_map<pair<double, double>, int, boost::hash<pair<double, double>>> line;
+        unordered_map <double,int> xline;
+        Mapa line;     
+        const int num = points.size();
+        int ans = 0;
+        for(int i=0; i<num-1; ++i){
+            for(int j=i; j<num; ++j){
+                if((points[i][0]-points[j][0]) != 0){
+                   double k = (points[i][1]-points[j][1])/(points[i][0]-points[j][0]);
+                   double b = points[i][1]-(k*points[i][0]); 
+                   //pair<int,int> l (k,b);
+                   line[make_pair(k,b)]++;
+                }
+                else{
+                    xline[points[i][0]]++;
+                }
+            }
+        }
+        for(auto i: line){
+            ans = (ans > i.second) ? ans : i.second;
+        }
+        for(auto i: xline){
+            ans = (ans > i.second) ? ans : i.second;
+        }
+        return ans;
+    }
+};
