@@ -23,3 +23,27 @@ public:
         return ans;
     }
 };
+
+
+Modified Version:
+class Solution {
+public:
+    int countBinarySubstrings(string s) {
+        const int len = s.size();
+        //int block[len];
+        
+        int con = 1, pre = 0, ans = 0;
+        for(int i=1; i<len; ++i){
+           if(s[i] == s[i-1]){
+               ++con;
+           } 
+           else{
+               ans += min(con, pre);
+               pre = con;
+               con = 1;
+           } 
+        }
+        ans += min(con,pre);
+        return ans;
+    }
+};
