@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int countSubstrings(string s) {
+        const int len = s.size();
+        int ans = len;
+        for(int i=0; i<len-1; ++i){
+           for(int j=i+1; j<len; ++j){
+               if(s[i] == s[j]){
+                  if(check(i,j,s)){
+                      ++ans;
+                  }
+               }
+           }
+        }
+        return ans;
+    }
+    
+    bool check(int l, int r, string s){
+        int m = (l+r) >> 1, k = 1;
+        while(l+k <= m){
+            if(s[l+k] != s[r-k]){
+              return false;  
+            }
+            ++k;
+        }
+        return true;
+    }
+};
