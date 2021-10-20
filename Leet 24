@@ -1,0 +1,30 @@
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+        if(!head || !(head->next)){
+           return head; 
+       }
+       ListNode *pre = head, *cur = pre->next, *ind;
+       //previous, current, induction(next round!)
+       
+       pre->next = cur->next;
+       //pre->next = cur->next->next;
+       cur->next = pre; 
+       head = cur;
+       //cur = pre->next;
+        
+       while(pre->next && pre->next->next){ 
+          cur = pre->next->next;
+          ind = pre->next;
+          ind->next = cur->next; 
+          cur->next = ind;
+          pre->next = cur;
+          pre = ind; 
+       }  
+        
+       /*while(s!=NULL){
+           return s;
+       }*/ 
+       return head; 
+    }
+};
