@@ -7,19 +7,21 @@ public:
        ListNode *pre = head, *cur = pre->next, *ind;
        //previous, current, induction(next round!)
        
-       pre->next = cur->next;
-       //pre->next = cur->next->next;
+       pre->next = cur->next; //why not cur->next->next ? consider cases where # of nodes are odd!
+       //pre->next = cur->next->next; For Even Nodes
        cur->next = pre; 
        head = cur;
        //cur = pre->next;
         
+       //if !(pre->next->next), we're finished! 
        while(pre->next && pre->next->next){ 
           cur = pre->next->next;
           ind = pre->next;
-          ind->next = cur->next; 
-          cur->next = ind;
-          pre->next = cur;
-          pre = ind; 
+          ind->next = cur->next;//This may be null 
+          cur->next = ind;//
+          pre->next = cur;//pre->next->next = ind
+          pre = ind;
+          //pre->next may be Null, if not, if !(pre->next->next), we're done! else, continue loop!  
        }  
         
        /*while(s!=NULL){
@@ -28,3 +30,22 @@ public:
        return head; 
     }
 };
+
+1    2    3    4    5
+pre  cur
+
+/--------\
+1<----2    3    4    5
+pre  cur
+
+if pre->next->next:
+ __________
+/          \
+1<----2    3    4    5
+pre  head  ind  cur
+           \________/ 
+ _______________         
+/               \
+1<----2    3<----4    5
+     head  pre  cur  
+           \________/            
