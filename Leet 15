@@ -1,0 +1,75 @@
+class Solution {
+public:
+    //if I KNOW SET
+    //Keep in mind we need to keep answer in increasing order, so no repetition
+    vector<vector<int>> threeSum(vector<int>& nums) {
+       vector<vector<int>> ans = {};
+        
+       map<int,int> flag = {}; 
+       for(int i=0; i<nums.size(); ++i){ 
+          if(flag.find(nums[i]) != flag.end()) flag[nums[i]] += 1;
+          else flag[nums[i]] = 1;      
+       } 
+       
+       /*for(const auto& jj: flag){
+           cout<< jj.first << " " << jj.second << "\n";
+       }*/ 
+       
+        
+       map<int,int>::iterator it = flag.begin();
+       map<int,int>::iterator jt = it;
+       for(it = flag.begin(); it!= flag.end(); ++it){
+           //cout << it->second << "\n";
+           if((it->second) >= 2){
+              int tt = -(it->first)-(it->first);
+              //special case 0 + 0 = 0
+             //or -(x + (-2x)) = x
+              if(flag.find(tt) != flag.end() && it->first != 0 && tt > it->first){
+                  cout << tt << "\n"; 
+                  vector<int> res = {};
+                  res.push_back(it->first);
+                  res.push_back(it->first);
+                  res.push_back(-(it->first)-(it->first));
+                  ans.push_back(res);
+              }
+              // 0 + 0 + 0 = 0 
+              else if (it->first == 0 && it->second >= 3){
+                  vector<int> res = {0,0,0};
+                  //res.push_back(it->first);
+                  //res.push_back(it->first);
+                  //res.push_back(-(it->first)-(it->first));
+                  ans.push_back(res); 
+              } 
+           }
+           
+           //jt = it;
+           //advance(jt, 1);
+           
+           //Here, it->first \neq jt->first
+           //but -(it->first + jt->first) could equal to one of them!!!
+           
+           for(jt = next(it,1); jt != flag.end(); ++jt){
+              //cout << it->first << " " << jt->first << "\n"; 
+              int tt = -(it->first)-(jt->first); 
+              // a<b<c, a+b+c = 0 
+              if(flag.find(tt) != flag.end() && tt > it->first && tt > jt->first){
+                  vector<int> res = {};
+                  res.push_back(it->first);
+                  res.push_back(jt->first);
+                  res.push_back(tt);
+                  ans.push_back(res);    
+              }
+              // -2x + x + x = 0, x \neq 0 
+              else if(flag.find(tt) != flag.end() && tt > it->first && tt >= jt->first && flag[tt] >= 2){
+                  //cout << tt << "\n"; 
+                  vector<int> res = {};
+                  res.push_back(it->first);
+                  res.push_back(jt->first);
+                  res.push_back(tt);
+                  ans.push_back(res);
+              } 
+           }
+       }
+       return ans; 
+    }
+};
