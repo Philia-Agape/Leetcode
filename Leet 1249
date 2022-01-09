@@ -1,0 +1,47 @@
+class Solution {
+public:
+    string minRemoveToMakeValid(string s) {
+        map<int, bool> flag;
+        stack<int> temp;
+        const int l = s.size();
+        int num = 0;
+        string ss;
+        vector<int> remove = {};
+        for(int i=0; i<l; ++i){
+           if(s[i] == '('){ 
+              ++num;
+              flag[i] = false; 
+              temp.push(i);     
+           }
+           else if(s[i] == ')' && num > 0 ){
+              --num;
+              int j = temp.top();
+              flag[j] = true; 
+              temp.pop(); 
+              flag[i] = true; 
+           }
+           else if(s[i] == ')' && num == 0 ){
+              flag[i] = false; 
+           }
+            
+        }
+        
+        /*while(!flag.empty()){
+           int i = flag.top();
+           flag[i] = true; 
+        }
+        
+        for(int i=0; i<remove.size(); ++i){
+           ss.erase(remove[i],1); 
+        }*/
+        
+        for(int i=0; i<l; ++i){
+           //char cc = s[i]; 
+           if(s[i] != '(' && s[i] != ')') ss.append(1,s[i]);
+           else if ( flag[i] == true ){
+              ss.append(1,s[i]); 
+           } 
+        }
+        return ss; 
+    }
+};
