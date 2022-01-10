@@ -1,0 +1,65 @@
+class Solution {
+public:
+    int minCost(vector<vector<int>>& costs) {
+       int ans = 1e5;
+       const int n = costs.size();
+       auto dp  = new int[n][3]; 
+        
+       dp[0][0] = costs[0][0]; 
+       dp[0][1] = costs[0][1]; 
+       dp[0][2] = costs[0][2];
+        
+       for(int i=1; i<n; ++i){
+          dp[i][0] = min(dp[i-1][1], dp[i-1][2]) + costs[i][0]; 
+          dp[i][1] = min(dp[i-1][0], dp[i-1][2]) + costs[i][1]; 
+          dp[i][2] = min(dp[i-1][0], dp[i-1][1]) + costs[i][2]; 
+       } 
+       
+       for(int i=0; i<3; ++i){
+          ans = (ans > dp[n-1][i]) ? dp[n-1][i] : ans; 
+       } 
+       return ans; 
+        
+       /*for(int i=0; i<n;++i){   
+          //dp[i][j] = minsearch(costs[i], j);
+          deque<int> temp = {costs[i][0]}; 
+          //max two in costs[i], increasing ordered
+          if(costs[i][1] > costs[i][0]) temp.push_back(costs[i][1]);
+          else temp.push_front(costs[i][1]); 
+          for(int j=1; j<3; ++j){
+             for(int k=0; k<=2; ++k){
+                if(k == 2) temp.push_back(costs[i][j]);
+                if(temp[k] >= costs[i][j]){
+                   deque<int>::iterator it = temp.begin();
+                   advance(it,k); 
+                   temp.erase();
+                    temp.insert(it, costs[i][j]);
+                   break; 
+                }
+                else{
+                    
+                } 
+             }
+             if(tt > costs[i][j])  
+             dp[][] = ;
+              
+          }   
+           
+       } 
+        
+       for(int i=0; i<3; ++i){
+          ans = (ans < dp[n-1][i]) ? dp[n-1][i] : ans; 
+       }
+        
+       return ans; */ 
+    }
+    
+    
+    int dfs(vector<int>& array, int index){
+        int min = 0;
+        for(int i=0; i<3; ++i){
+           min = (i!= index && min < array[i]) ? array[i] : min;   
+        } 
+        return min; 
+    }
+};
