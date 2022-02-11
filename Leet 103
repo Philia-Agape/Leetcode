@@ -1,0 +1,33 @@
+class Solution {
+ //vector<vector<int>> ans;
+    
+public:
+    vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
+        vector<vector<int>> ans;
+        int temp = 0;
+        dfs(root,ans,0);
+        for(int i=0; i<ans.size(); ++i){
+            if(i % 2 == 1){
+                int l = ans[i].size();
+                for(int j=0; j<l / 2; ++j){
+                    temp = ans[i][j];
+                    ans[i][j] = ans[i][l-1-j];
+                    ans[i][l-1-j] = temp;
+                }
+            }    
+        }
+        return ans;
+    }
+    
+    void dfs (TreeNode* dd, vector<vector<int>>& ans, int level){
+        if(dd == NULL) return;
+        if(ans.size() == level) ans.push_back(vector<int>{});
+        ans[level].push_back(dd->val);
+        dfs(dd->left,ans,level+1);
+        dfs(dd->right,ans,level+1);
+
+        
+        return;
+    }    
+    
+};
