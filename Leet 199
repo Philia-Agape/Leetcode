@@ -1,0 +1,43 @@
+class Solution {
+public:
+    vector<int> rightSideView(TreeNode* root) {
+        vector<int> ans;
+        stack<TreeNode*> nn;
+        if(!root) return ans;
+        nn.push(root);
+        rightview(ans, nn, 0);
+        return ans;
+    }
+    
+    void rightview(vector<int>& ans, stack<TreeNode*>& nn, int level){
+        if(nn.empty()) return;
+        
+        stack<TreeNode*> tmp;
+        
+        if(level % 2 == 0){
+           ans.push_back(nn.top()->val);
+           while(!nn.empty()){
+               if(nn.top()->right) tmp.push(nn.top()->right);
+               if(nn.top()->left) tmp.push(nn.top()->left);
+               nn.pop();
+           }
+           nn = tmp;
+           rightview(ans, nn, level+1);
+        }
+        
+        else{
+           int odd = 0; 
+           while(!nn.empty()){
+               odd = nn.top()->val;
+               if(nn.top()->left) tmp.push(nn.top()->left);
+               if(nn.top()->right) tmp.push(nn.top()->right);
+               nn.pop();
+           }
+           ans.push_back(odd); 
+           nn = tmp;
+           rightview(ans, nn, level+1); 
+        }
+        
+        return;
+    }
+};
