@@ -1,0 +1,25 @@
+class Solution {
+public:
+    Node* lowestCommonAncestor(Node* p, Node * q) {
+        stack<Node*> pstack;
+        stack<Node*> qstack;
+        while(p){
+            pstack.push(p);
+            p = p->parent;
+        }
+        
+        while(q){
+            qstack.push(q);
+            q = q->parent;
+        }
+        
+        Node* ans = pstack.top();
+        while(!pstack.empty() && !qstack.empty()){
+            if(pstack.top() != qstack.top()) break;
+            ans = pstack.top();
+            pstack.pop();
+            qstack.pop();
+        }
+        
+        return ans;
+    }
