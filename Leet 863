@@ -1,0 +1,102 @@
+class Solution {
+public:
+    vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
+       vector<int> ans; 
+       down(target, ans, 0, k);
+       vector<int> dir; // 0:left, 1:right 
+        
+       path(root, target, dir, {});
+        
+       for(int i=0; i<dir.size(); ++i) 
+          cout << dir[i] << " ";
+       cout << "\n"; 
+       
+       if(dir.size() == 0) {return ans;} 
+        
+       /*if(dir.size() < k){
+           int l = k-1-dir.size();
+           //cout << "l = " << l << "\n";
+           if(dir.size() == 0) {return ans;}
+           else if(dir[0] == 0) down(root->right, ans,l);
+           else down(root->left, ans, l);
+       }*/ 
+       
+       //else { 
+        
+          int index = 0;
+          TreeNode* rup = root;  
+          cout << "dir" << dir.size() << " \n";
+          while(index+k < dir.size()){
+               cout << index << "\n";
+              if(dir[index] == 0) rup = rup->left;
+              else rup = rup->right;
+              ++index;
+          } 
+         
+          if(k != 0 && dir.size() == index+k) ans.push_back(rup->val);
+           
+          /*if(dir[index] == 0) rup = rup->left;
+              else rup = rup->right;
+          
+           ++index;*/ 
+           
+          while(index < dir.size()){
+              if(dir[index] == 0){
+                  down(rup->right, ans, dir.size()-index+1, k);
+                  rup = rup->left;
+                  ++index;
+              }    
+              else{
+                  down(rup->left, ans, dir.size()-index+1, k);
+                  rup = rup->right;
+                  ++index;
+              }    
+              //rup = (dir[index] == 0) ? rup->left : rup->right;
+              //++index;
+          } 
+       //} for else
+        
+        
+       
+       /*set<int> test;
+       for(auto& x: ans) test.insert(x);
+       ans = {};
+       set<int>:: iterator it = test.begin();
+       while(it != test.end()){
+           ans.push_back(*it);
+       }*/ 
+        
+       return ans;
+    }
+    
+    /*void up(TreeNode* root, vector<int>& ans, int dir, int k){
+        
+        return;
+    }*/
+    
+    void path(TreeNode* root, TreeNode* target, 
+              vector<int>& dir, vector<int> test){
+        if(!root) return;
+        else if(root == target){
+            dir = test;
+            return;
+        }
+        
+        test.push_back(0);
+        path(root->left, target, dir, test);
+        test[test.size()-1] = 1;
+        path(root->right, target, dir, test); 
+        return;
+    }
+    
+    void down(TreeNode* root, vector<int>& ans, int length, int k){
+        if(!root || length > k) return;
+        else if(length == k) ans.push_back(root->val);
+        else{
+             cout << length << " " << root->val << "\n";
+            down(root->left, ans, length+1, k);
+            down(root->right, ans, length+1, k);
+        }
+        return;
+    }
+};
