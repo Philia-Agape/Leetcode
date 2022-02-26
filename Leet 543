@@ -1,0 +1,18 @@
+class Solution {
+    //Not necessarily longest path travel through the root!!!
+    //[4,-7,-3,null,null,-9,-3,9,-7,-4,null,6,null,-6,-6,null,null,0,6,5,null,9,null,null,-1,-4,null,null,null,-2]
+
+    public:
+    int diameterOfBinaryTree(TreeNode* root) {
+        int ans = 0;
+        depth(root, &ans);
+        return ans;
+    }
+    
+    int depth(TreeNode* root, int* ans){
+        if(root == NULL) return 0; 
+        int l = depth(root->left, ans), r = depth(root->right, ans);
+        if(l+r > *ans) *ans = l+r;
+        return 1+max(l,r);
+    }
+};
