@@ -1,0 +1,23 @@
+class Solution {
+public:
+    bool isValidBST(TreeNode* root) {
+        //const long long mmm = 2147483647;
+        const long long mmm = 2147483649, mm = -2147483649;
+        bool flag = true;
+        return check(root->left, mm, root->val, &flag) && check(root->right, root->val, mmm, &flag);
+    }
+    
+    bool check(TreeNode* root, long long l, long long r, bool* flag){
+        if(*flag = false) return false;
+        if(root == NULL) return true;
+        cout << "l = " << l << " r = "<< r << "\n";
+        if(root->val >= r || root->val <= l){ 
+            *flag = false;
+            cout << l << root->val << r << "\n";
+            return false;
+        }
+        long long rval = (long long) root->val;
+        cout << "rval =" << rval << "\n";
+        return check(root->left, l, rval, flag) && check(root->right, rval, r, flag); 
+    }
+};
