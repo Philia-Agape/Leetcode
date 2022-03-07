@@ -1,0 +1,126 @@
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+       if(nums.size() == 1) return 1;
+       else if (nums.size() == 0) return 0;
+       
+       //vector<int> arrange = nums;  
+       //quicksort(arrange,0,arrange.size()-1); 
+       /*for(int i=0; i<nums.size(); ++i)
+          printf("%d ", nums[i]);
+       printf("\n");*/
+ 
+       /*map<int,int> position;
+       position[arrange[0]] = 0; 
+       for(int i=1; i<nums.size(); ++i){
+          //if(arrange[i] == arrange[i-1]) continue;
+          position.insert(make_pair(arrange[i],i));
+       } 
+       for(int i=0; i<nums.size(); ++i){
+          if(nums.size()-i < ans) break; 
+          int length = sublength(nums, i, -1e4);
+          ans = ans < length ? length : ans; 
+       }*/
+        
+       const int n = nums.size(); 
+       
+        
+       int dp[n][n]; 
+       int loc[n]; //loc[i]: Longest lenght @n = i
+       //dp[i][j][k]: @index = i, prev = j, next = k, the length of sequence counting reversely
+       //especially dp[i][i][i] = 1 for all 1<= i <=n
+        
+       int ans = 1;       
+       for(int i=0; i<n; ++i){ 
+          for(int j=0; j<n; ++j){
+             dp[i][j] = 0; 
+          }    
+          loc[i] = 1; 
+          dp[i][i] = 1; 
+       }
+       
+       //loc[0] = 1;
+        
+       for(int i=1; i<n; ++i){
+           //update every loc[i], since loc[i] is increasing (though not strictly)
+           //loc[i] = loc[i] < loc[i-1] ? loc[i-1] : loc[i];
+           for(int j=0; j<=i; ++j){
+              int MAX = loc[j]; 
+              //for(int k=0; k<=j; ++k) MAX = MAX > dp[j][k] ? MAX : dp[j][k]; 
+              if(i!=j) dp[i][j] = nums[i] > nums[j] ? 1+loc[j] : 0;
+              loc[i] = loc[i] >= dp[i][j] ? loc[i] : dp[i][j]; 
+           }
+       } 
+       
+       for(int i=0; i<n; ++i){
+           for(int j=0; j<n; ++j)
+           //ans = ans > dp[n-1][i] ? ans : dp[n-1][i]; 
+           if(ans < dp[i][j]){
+              ans = dp[i][j];
+              //cout << "i" << i << "\n";     
+           }
+           //cout << dp[n-1][i] << " ";
+       }    
+       //Idea is, the longest sequence start with node index as smaller as possible 
+       /*for(int i=0; i<n; ++i){
+           for(int j=0; j<n; ++j)
+              cout << dp[i][j] << " ";
+           cout << "\n";
+       }*/
+        
+       return ans; 
+    }
+    
+    /*int sub (int index, int up, vector<int> nums, vector<bool> vis, vector<vector<int>> web){
+        //recursive condition
+        if(index+1 == web.size()){ 
+            if (up < nums[index]) return 1;
+            else return 0;
+        }
+        if(nums[index] <= up) return sub(index+1, up, nums, vis, web);
+        if(!vis[index]) vis[index] = true;
+        int MAX = 0, tmp = 0;
+        for(auto x: web[index]){
+            tmp = max(1+sub(index+1, x, nums, vis, web), sub(index+1, up, nums, vis, web));
+            if(MAX < tmp) MAX = tmp;
+        }
+        
+       
+        return MAX;
+    }*/
+    
+    
+    /*int sublength(vector<int> nums, int index, int up){
+        /*if(index <= nums.size() % 2){
+           int l = nums.size()-index; 
+           for(int i=0; i<index; ++i)
+              if(position[nums[i]] <= index) 
+        }
+        else{
+        if(index == nums.size()-1){
+            if(nums[index] <= up) return 0;
+            else return 1;    
+        }
+        if(up >= nums[index]) return sublength(nums, index+1, up);
+        return max(1+sublength(nums, index+1, nums[index]), 
+                   sublength(nums, index+1, up));
+    }*/
+    
+    /*void quicksort(vector<int>& nums, int left, int right){
+       if(left >= right) return;
+        int l = left, r = right, tmp = nums[l];
+        while(l < r){
+            while(l<r && nums[r]>=tmp){
+               --r; 
+            }
+            nums[l] = nums[r];
+            while(l<r && nums[l]<=tmp){
+               ++l; 
+            }
+            nums[r] = nums[l]; 
+        }
+        nums[l] = tmp;
+        quicksort(nums, left, l-1);
+        quicksort(nums, l+1, right);
+    }*/
+};
