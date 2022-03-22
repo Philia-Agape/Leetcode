@@ -1,0 +1,83 @@
+class Solution {
+private:
+    //int div[3] = {2,3,5};
+    
+    //Given Tuple (i,j,k) where i+j+k = m
+    //we have \sum_{i=0}^{m} (i+1)*(m-i+1) = (m+1)(m+2)(m+3)/6
+    //This is the total sum of Prime Factor sum up to m, 
+    //but not even first (m+1)(m+2)(m+3)/6 UglyNumber, e.g. 2^5 < 5^3
+    
+    
+public:
+    int nthUglyNumber(int n) {
+        //unordered_map<int,int> multmap = {make_pair(1,0)};
+        vector<long long> ugly = {1}; 
+        //array, vector faster?
+        stack<long long> mult ({1}); //wait to be multplied
+        stack<long long> tmp;
+        //cout << mult.top() << "\n";
+        
+        long long mult_top = mult.top();
+        int op = 0, bound_1 = 0, loc_max; //operation of multiply, bound1, c
+        
+        for(int i=0; i<n; ++i){
+            ++bound_1;
+            if((i+1)*(i+2)*(i+3) > 6*n) break;   
+        }
+        
+        bool insert = true;
+        //while(op <= bound_1 || insert){
+        while(op <= bound_1 || pow(2,op) < pow(5,bound_1)){
+           //insert = false; 
+           while(!mult.empty()){
+              mult_top = mult.top();
+              if( mult_top*2 > static_cast<long long>(pow(5,bound_1)) ) mult.pop();
+               
+              //CONTINUE TO MULTIPLY PRIME FACTOR GREATER THAN ITSELF
+              //TO ENSURE NO REPETITION 
+               
+              else if (mult_top % 3 != 0 && mult_top % 5 != 0){
+                 long long x2 = mult_top*2, x3 = mult_top*3, x5 = mult_top*5; 
+                 ugly.push_back(x2);
+                 ugly.push_back(x3);
+                 ugly.push_back(x5); 
+                 mult.pop();
+                 tmp.push(mult_top * 2); 
+                 tmp.push(mult_top * 3); 
+                 tmp.push(mult_top * 5);
+              }
+              else if (mult_top % 5 != 0){
+                 long x3 = mult_top*3, x5 = mult_top*5;  
+                 ugly.push_back(x3);
+                 ugly.push_back(x5); 
+                 mult.pop(); 
+                 tmp.push(x3); 
+                 tmp.push(x5); 
+              }
+              else {
+                 long long x5 = mult_top*5;  
+                 ugly.push_back(x5);
+                 mult.pop(); 
+                 tmp.push(x5);  
+              }
+           }
+           
+           ++op; 
+           //op is the sum of tuple (i,j,k) which represent 2^i 3^j 5^k  
+           
+           while(!tmp.empty()){ 
+              long long tmp_top = tmp.top();
+              //cout << tmp_top << " "; 
+              mult.push(tmp_top);
+              tmp.pop(); 
+           }    
+           //cout << "\n"; 
+        }
+        
+        sort(ugly.begin(), ugly.end(), [](const long long& a, const long long& b){return a<b;});
+        for(auto x: ugly)
+            printf("%d ", x);
+        return ugly[n-1];
+    }
+ 
+};
